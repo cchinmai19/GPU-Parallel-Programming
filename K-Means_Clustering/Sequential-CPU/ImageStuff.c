@@ -44,7 +44,7 @@ unsigned char** ReadBMP(char* filename)
 	int RowBytes = (width*3 + 3) & (~3);
 	ip.Hbytes = RowBytes;
 
-	printf("\n   Input BMP File name: %20s  (%u x %u)\n",filename,ip.Hpixels,ip.Vpixels);
+	printf("\n   Input File name: %20s  (%u px x %u px)\n",filename,ip.Hpixels,ip.Vpixels);
 
 	unsigned char tmp;
 	unsigned char **TheImage = (unsigned char **)malloc(height * sizeof(unsigned char*));
@@ -81,13 +81,13 @@ void WriteBMP(unsigned char** img, char* filename)
 			fputc(temp,f);
 		}
 	}
-	printf("\n  Output BMP File name: %20s  (%u x %u)\n",filename,ip.Hpixels,ip.Vpixels);
+	printf("\n  Output File name: %20s  (%u x %u)\n",filename,ip.Hpixels,ip.Vpixels);
 	fclose(f);
 }
 
 
 
-void GetImage(unsigned char** img, int *R, int *G, int *B,int K)
+void GetImage(unsigned char** img, double *R, double *G, double *B,int K, int* labels)
 {
     int index = 0,i,j,l;
     l = 255/K;
@@ -96,9 +96,9 @@ void GetImage(unsigned char** img, int *R, int *G, int *B,int K)
     {
         for(j = 0; j < ip.Hbytes;j +=3)
         {
-            img[i][j] = (unsigned char)l*R[index];
-            img[i][j+1] = (unsigned char)l*G[index];
-            img[i][j+2] = (unsigned char)l*B[index];
+            img[i][j] = (unsigned char) R[labels[index]];  //l*R[index];
+            img[i][j+1] = (unsigned char) G[labels[index]];  //l*G[index];
+            img[i][j+2] = (unsigned char) B[labels[index]];  //l*B[index];
             index++;
         }
     }
@@ -119,7 +119,7 @@ void WriteFile(unsigned char** img,double *RDataset,double *GDataset,double *BDa
      RDataset[i] = (double)img[x][y];
      GDataset[i] = (double)img[x][y+1];
      BDataset[i] = (double)img[x][y+2];
-     fprintf(f, "%u %u %u %lf %d", img[x][y],img[x][y+1],img[x][y+2],EuclDataset[i],label[i]);
+     fprintf(f, "R: %u\tG: %u\tB: %u\tEucl: %lf\tLabel: %d", img[x][y],img[x][y+1],img[x][y+2],EuclDataset[i],label[i]);
      fprintf(f,"\n");
      i += 1;
 		}
