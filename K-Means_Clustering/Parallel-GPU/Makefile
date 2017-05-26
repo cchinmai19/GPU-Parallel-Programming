@@ -1,6 +1,8 @@
-.PHONY : all,clean
+CC = /usr/local/cuda-8.0/bin/nvcc
 
-kmeans	:	kmeans.cu 
-			nvcc kmeans.cu -o kmeans -lopencv_core -lopencv_highgui
+parallel	:	kmeans.cu
+			$(CC) -x cu -arch=sm_30 kmeans.cu -o kmeansPara -lopencv_core -lopencv_highgui
 clean	:
-			rm -f kmeans
+			rm -f kmeansPara
+images_disappear	:
+			rm -f *.jpg *.png *.bmp
