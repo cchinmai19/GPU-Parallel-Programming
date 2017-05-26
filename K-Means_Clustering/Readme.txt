@@ -1,9 +1,23 @@
-To execute sequential code:
-1. make kmeansC // compile
-2. ./kmeansC input_filename.bmp output_filename.bmp num_clusters //run
+=========================================
+K-means Clustering for Image Segmentation
+=========================================
 
-To execute parallel code:
-1. source source_file // loads necessary modules
-2. make kmeans // compile
-3. salloc -p gpu --gres=gpu:1 srun kmeans input_filename.bmp output_filename.bmp num_clusters & //run
+Setup
+-----
+Make sure that you have opencv installed and change the Makefiles so that they point to your version of CUDA compiler (nvcc)
+
+How to Run
+----------
+	cd Sequential
+	make sequential
+	./kmeansSeq ../images/pepper.bmp output.bmp 4
+	
+	cd ../Parallel
+	make parallel
+	./kmeansPara ../images/pepper.bmp output.bmp 4
+
+How to Test
+-----------
+	cd test_suite
+	./autoTest
 
